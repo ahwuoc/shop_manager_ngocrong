@@ -3,6 +3,15 @@ import prisma from '@/app/lib/prisma';
 
 type RouteContext = { params: Promise<{ id: string }> };
 
+// Helper to convert BigInt to Number for JSON serialization
+function serializeAccount(account: Record<string, unknown>) {
+  const serialized: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(account)) {
+    serialized[key] = typeof value === 'bigint' ? Number(value) : value;
+  }
+  return serialized;
+}
+
 // GET /api/admin/accounts/[id]
 export async function GET(request: NextRequest, context: RouteContext) {
   try {
@@ -35,7 +44,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
       );
     }
 
-    return NextResponse.json({ success: true, data: account });
+    return NextResponse.json({ success: true, data: serializeAccount(account as unknown as Record<string, unknown>) });
   } catch (error) {
     console.error('Error fetching account:', error);
     return NextResponse.json(
@@ -85,7 +94,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
 
     return NextResponse.json({
       success: true,
-      data: updated,
+      data: serializeAccount(updated as unknown as Record<string, unknown>),
       message: 'Account updated successfully',
     });
   } catch (error) {
