@@ -1,0 +1,740 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model account {
+  id               Int       @id @default(autoincrement())
+  username         String    @unique(map: "username") @db.VarChar(20)
+  password         String    @db.VarChar(100)
+  create_time      DateTime? @default(now()) @db.Timestamp(0)
+  update_time      DateTime? @default(now()) @db.Timestamp(0)
+  ban              Int       @default(0) @db.SmallInt
+  point_post       Int       @default(0)
+  last_post        Int       @default(0)
+  role             Int       @default(-1)
+  is_admin         Boolean   @default(false)
+  last_time_login  DateTime  @default(dbgenerated("('2002-05-07 14:00:00')")) @db.Timestamp(0)
+  last_time_logout DateTime  @default(dbgenerated("('2002-05-07 14:00:00')")) @db.Timestamp(0)
+  ip_address       String?   @db.VarChar(50)
+  active           Int       @default(0)
+  thoi_vang        Int       @default(0)
+  TopBoss          Int       @default(0)
+  TopNoel          Int?
+  NangDong         Int?
+  server_login     Int       @default(1)
+  bd_player        Float?    @default(1)
+  is_gift_box      Boolean?  @default(false)
+  gift_time        String?   @default("0") @db.VarChar(255)
+  reward           String?   @db.LongText
+  vnd              Int       @default(1000)
+  tongnap          Int       @default(1000)
+  admin            Int       @default(0)
+  mabaove          String?   @db.VarChar(100)
+  gioithieu        Int?
+  xacnhan_gioitheu Int       @default(0)
+  email            String?   @db.VarChar(100)
+  tichdiem         Int       @default(0)
+  xacminh          Int       @default(0)
+  thoigian_xacminh Int       @default(0)
+  matkhau_xacminh  Int       @default(0)
+  mocnap           Int?
+  moc_qua_1        Int       @default(0)
+  moc_qua_2        Int       @default(0)
+  moc_qua_3        Int       @default(0)
+  moc_qua_4        Int       @default(0)
+  moc_qua_5        Int       @default(0)
+  mocqua           String?   @db.Text
+  coin             Int       @default(0)
+  baiviet          Int       @default(0)
+  avatar           Int       @default(1)
+  admin_web        BigInt    @default(0)
+  time             BigInt    @default(dbgenerated("(current_timestamp())"))
+  mkc2             String?   @db.VarChar(100)
+  gmail            String?   @db.VarChar(100)
+  pointNap         Int?
+  luotquay         Int       @default(0)
+  toptrungthu      Int?      @default(0)
+  TopBossHalloween Int       @default(0)
+  TopQuaHalloween  Int       @default(0)
+}
+
+model achivements {
+  id        Int    @id @default(autoincrement())
+  name      String @db.Text
+  detail    String @db.Text
+  money     Int
+  max_count String @default("0") @db.VarChar(250)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model adminpanel {
+  domain    String? @db.Text
+  title     String? @db.Text
+  tenmaychu String? @db.Text
+  logo      String? @db.Text
+  trangthai String  @db.Text
+  android   String? @db.Text
+  iphone    String? @db.Text
+  windows   String? @db.Text
+  java      String? @db.Text
+  apikey    String? @db.Text
+  giatri    Int     @default(1)
+  userlogin String? @db.VarChar(20)
+  stk       String? @db.VarChar(20)
+  name      String? @db.VarChar(255)
+  password  String? @db.VarChar(255)
+  sessionId String? @db.VarChar(255)
+  deviceId  String? @db.VarChar(255)
+  token     String? @db.VarChar(255)
+  time      Int
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model alert {
+  content String? @db.LongText
+
+  @@ignore
+}
+
+model attribute_server {
+  id                    Int                @id @default(autoincrement())
+  attribute_template_id Int
+  value                 Int
+  time                  Int
+  attribute_template    attribute_template @relation(fields: [attribute_template_id], references: [id], onUpdate: Restrict, map: "attribute_server_ibfk_1")
+
+  @@index([attribute_template_id], map: "attribute_template_id")
+}
+
+model attribute_template {
+  id               Int                @id @default(autoincrement())
+  name             String             @db.MediumText
+  attribute_server attribute_server[]
+}
+
+model cai_trang {
+  id_temp Int @id
+  head    Int @default(-1)
+  body    Int @default(-1)
+  leg     Int @default(-1)
+  bag     Int @default(-1)
+}
+
+model caption {
+  id    Int    @id @default(autoincrement())
+  earth String @db.Text
+  saiya String @db.Text
+  namek String @db.Text
+  power BigInt
+}
+
+model card_history {
+  id          Int      @id @default(autoincrement())
+  id_request  Int
+  user_id     Int
+  type        String   @db.Text
+  value       String   @db.Text
+  serial      String   @db.Text
+  pin         String   @db.Text
+  sign        String   @db.Text
+  status      String   @db.Text
+  date        DateTime @default(now()) @db.Timestamp(0)
+  ip_callback String?  @db.Text
+}
+
+model category {
+  id           Int     @id @default(autoincrement())
+  tenchuyenmuc String  @db.Text
+  mota         String? @db.Text
+}
+
+model clan_sv1 {
+  id             Int      @id
+  NAME           String   @db.VarChar(255)
+  slogan         String   @default("") @db.VarChar(255)
+  img_id         Int      @default(0)
+  power_point    BigInt   @default(0)
+  max_member     Int      @default(15) @db.SmallInt
+  clan_point     Int      @default(0)
+  LEVEL          Int      @default(1)
+  members        String   @db.Text
+  create_time    DateTime @default(now()) @db.Timestamp(0)
+  thanhTichBDKB  String   @default("[0,0]") @db.VarChar(255)
+  thongTinLeader String   @default("[0,0,0,0,0]") @db.VarChar(255)
+}
+
+model clan_sv2 {
+  id            Int      @id
+  NAME          String   @db.VarChar(255)
+  slogan        String   @default("") @db.VarChar(255)
+  img_id        Int      @default(0)
+  power_point   BigInt   @default(0)
+  max_member    Int      @default(10) @db.SmallInt
+  clan_point    Int      @default(0)
+  LEVEL         Int      @default(1)
+  members       String   @db.Text
+  create_time   DateTime @default(now()) @db.Timestamp(0)
+  thanhTichBDKB String   @default("[0,0]") @db.VarChar(255)
+}
+
+model cmt_hoangvietdung {
+  id         Int    @id @default(autoincrement())
+  baiviet_id String @db.Text
+  khach_id   String @db.Text
+  noidung    String @db.Text
+  time       String @db.VarChar(99)
+}
+
+model collection_book {
+  id         Int    @id @default(autoincrement())
+  item_id    Int
+  name       String @db.Text
+  info       String @db.Text
+  icon       Int
+  rank       Int
+  max_amount Int
+  type       Int
+  mob_id     Int
+  head       Int
+  body       Int
+  leg        Int
+  bag        Int
+  options    String @db.Text
+  aura       Int    @default(-1)
+
+  @@index([item_id], map: "item_id")
+}
+
+model comment {
+  id      Int      @id @default(autoincrement())
+  id_post Int?
+  id_user Int?
+  noidung String   @db.Text
+  ngaytao DateTime @default(now()) @db.DateTime(0)
+}
+
+model comments {
+  id         Int      @id @default(autoincrement())
+  post_id    Int
+  nguoidung  String   @db.VarChar(255)
+  traloi     String   @db.Text
+  gender     Int      @default(0)
+  admin      Int      @default(0)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  binhluan   Int      @default(0)
+  image      String?  @db.VarChar(255)
+  server     Int      @default(0)
+  posts      posts    @relation(fields: [post_id], references: [id], onUpdate: Restrict, map: "comments_ibfk_1")
+
+  @@index([post_id], map: "post_id")
+}
+
+model consignment_shop {
+  id             Int    @id
+  consignor_id   Int
+  tab            Int
+  item_id        Int
+  gold           Int
+  gem            Int
+  quantity       Int
+  up_top         Int    @default(0)
+  sold           Int
+  item_options   String @db.Text
+  time_consign   BigInt
+  consignor_name String @db.Text
+  su_kien        Int
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model cpanel {
+  userlogin String? @db.VarChar(20)
+  stk       String? @db.VarChar(20)
+  name      String? @db.VarChar(255)
+  password  String? @db.VarChar(255)
+  sessionId String? @db.VarChar(255)
+  deviceId  String? @db.VarChar(255)
+  token     String? @db.VarChar(255)
+  time      Int
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model event {
+  server    Int? @default(0)
+  kame      Int? @default(0)
+  bill      Int? @default(0)
+  karin     Int? @default(0)
+  thuongde  Int? @default(0)
+  thanvutru Int? @default(0)
+
+  @@ignore
+}
+
+model flag_bag {
+  id        Int    @id
+  icon_data String @db.VarChar(255)
+  NAME      String @default("flag_bag") @db.VarChar(255)
+  gold      Int    @default(-1)
+  gem       Int    @default(-1)
+  icon_id   Int    @default(0)
+}
+
+model gift_code_histories {
+  id           BigInt     @id @default(autoincrement()) @db.UnsignedBigInt
+  player_id    Int
+  gift_code_id BigInt     @db.UnsignedBigInt
+  code         String     @db.VarChar(255)
+  created_at   DateTime?  @db.Timestamp(0)
+  updated_at   DateTime?  @db.Timestamp(0)
+  gift_codes   gift_codes @relation(fields: [gift_code_id], references: [id], onUpdate: Restrict, map: "gift_code_histories_ibfk_1")
+
+  @@index([gift_code_id], map: "gift_code_histories_gift_code_id_foreign")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model gift_codes {
+  id                  BigInt                @id @default(autoincrement()) @db.UnsignedBigInt
+  type                Int                   @db.TinyInt
+  code                String                @db.VarChar(255)
+  gold                Int                   @default(0)
+  gem                 Int                   @default(0)
+  ruby                Int                   @default(0)
+  items               String?               @db.LongText
+  status              Int                   @db.TinyInt
+  active              Int                   @default(0)
+  expires_at          DateTime?             @db.Timestamp(0)
+  created_at          DateTime?             @db.Timestamp(0)
+  updated_at          DateTime?             @db.Timestamp(0)
+  gift_code_histories gift_code_histories[]
+}
+
+model global_data {
+  id                Int  @id @default(autoincrement())
+  total_decorations Int? @default(0)
+}
+
+model head_avatar {
+  head_id   Int @id
+  avatar_id Int
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model history_receive_goldbar {
+  player_id           Int
+  player_name         String   @db.VarChar(255)
+  gold_before_receive Int
+  gold_after_receive  Int
+  gold_bag_before     Int
+  gold_bag_after      Int
+  gold_box_before     Int
+  gold_box_after      Int
+  time_receive        DateTime @default(now()) @db.DateTime(0)
+
+  @@index([player_id], map: "player_id")
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model history_transaction {
+  player_1          String   @db.VarChar(255)
+  player_2          String   @db.VarChar(255)
+  item_player_1     String   @db.Text
+  item_player_2     String   @db.Text
+  bag_1_before_tran String   @db.Text
+  bag_2_before_tran String   @db.Text
+  bag_1_after_tran  String   @db.Text
+  bag_2_after_tran  String   @db.Text
+  time_tran         DateTime @default(now()) @db.Timestamp(0)
+
+  @@ignore
+}
+
+model img_by_name {
+  id      Int     @id @default(autoincrement())
+  NAME    String? @unique(map: "NAME") @db.VarChar(55)
+  n_frame Int
+}
+
+model intrinsic {
+  id           Int    @id
+  NAME         String @db.VarChar(255)
+  param_from_1 Int    @default(0)
+  param_to_1   Int    @default(0)
+  param_from_2 Int    @default(0)
+  param_to_2   Int    @default(0)
+  icon         Int    @default(0)
+  gender       Int    @default(3) @db.SmallInt
+}
+
+model item_option_template {
+  id   Int     @id
+  NAME String? @db.VarChar(255)
+  TYPE Int     @default(0)
+}
+
+model item_shop {
+  id                Int       @id @default(autoincrement())
+  tab_id            Int
+  temp_id           Int
+  gold              Int
+  gem               Int
+  is_new            Boolean   @default(true)
+  is_sell           Boolean   @default(true)
+  item_exchange     Int       @default(-1)
+  quantity_exchange Int       @default(0)
+  create_time       DateTime? @default(now()) @db.Timestamp(0)
+
+  @@index([tab_id], map: "tab_id")
+  @@index([temp_id], map: "temp_id")
+}
+
+model item_shop_option {
+  item_shop_id Int
+  option_id    Int
+  param        Int
+  id_id        Int @id @default(autoincrement())
+}
+
+model item_template {
+  id            Int     @id
+  TYPE          Int
+  gender        Int     @db.SmallInt
+  NAME          String  @db.VarChar(255)
+  description   String  @db.VarChar(255)
+  icon_id       Int
+  part          Int
+  is_up_to_up   Boolean
+  power_require Int
+}
+
+model map_template {
+  id          Int    @id
+  NAME        String @db.VarChar(55)
+  data        String @default("[]") @db.VarChar(1000)
+  zones       Int    @default(1)
+  max_player  Int    @default(15)
+  waypoints   String @db.Text
+  mobs        String @db.Text
+  npcs        String @db.Text
+  effect_noel String @db.Text
+  eff_event   String @db.Text
+  effect      String @db.Text
+}
+
+model mbbank {
+  id      Int    @id @default(autoincrement())
+  tranId  String @db.VarChar(255)
+  sodu    String @db.VarChar(255)
+  amount  Int
+  comment String @db.VarChar(255)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model mini_pet {
+  id_temp BigInt?
+  head    Int?    @default(-1)
+  body    Int?    @default(-1)
+  leg     Int?    @default(-1)
+
+  @@ignore
+}
+
+model mob_template {
+  id                Int    @id
+  TYPE              Int
+  NAME              String @db.VarChar(50)
+  hp                Int
+  range_move        Int    @db.SmallInt
+  speed             Int    @db.SmallInt
+  dart_type         Int    @db.SmallInt
+  percent_dame      Int    @default(5) @db.SmallInt
+  percent_tiem_nang Int    @default(50) @db.SmallInt
+}
+
+model moc_nap {
+  id             Int              @id @default(autoincrement())
+  required       Int
+  descriptor     String?          @db.VarChar(255)
+  rewards        String?          @db.Text
+  created_at     DateTime?        @default(now()) @db.Timestamp(0)
+  mocnap_claimed mocnap_claimed[]
+
+  @@index([required], map: "idx_required")
+}
+
+model mocnap_claimed {
+  id         Int       @id @default(autoincrement())
+  player_id  Int
+  mocnap_id  Int
+  claimed_at DateTime? @default(now()) @db.Timestamp(0)
+  player     player    @relation(fields: [player_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "1")
+  moc_nap    moc_nap   @relation(fields: [mocnap_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "2")
+
+  @@unique([player_id, mocnap_id], map: "unique_player_mocnap")
+  @@index([mocnap_id], map: "mocnap_id")
+}
+
+model napthe {
+  id         Int       @id @default(autoincrement())
+  user_nap   String    @db.VarChar(100)
+  telco      String    @db.VarChar(255)
+  serial     String    @db.VarChar(255)
+  code       String    @db.VarChar(255)
+  amount     Int
+  status     Int
+  request_id String    @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model naptien {
+  id          Int       @id @default(autoincrement())
+  uid         String?   @db.Text
+  type        String    @default("CARD") @db.Text
+  sotien      String?   @db.Text
+  seri        String?   @db.Text
+  code        String?   @db.Text
+  loaithe     String?   @db.Text
+  time        DateTime? @default(now()) @db.Timestamp(0)
+  noidung     String?   @db.Text
+  tinhtrang   String?   @db.Text
+  tranid      String?   @db.Text
+  magioithieu String?   @db.Text
+}
+
+model nclass {
+  id   Int    @id
+  NAME String @db.VarChar(50)
+}
+
+model notifications {
+  id      Int     @id @default(autoincrement())
+  title   String? @db.Text
+  content String? @db.Text
+}
+
+model npc_template {
+  id   Int    @id
+  NAME String @db.VarChar(50)
+  head Int
+  body Int
+  leg  Int
+  shop shop[]
+}
+
+model part {
+  id   Int    @id
+  TYPE Int
+  DATA String @db.Text
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model pet_follow {
+  id_temp BigInt? @default(-1)
+  icon    Int?    @default(-1)
+  width   Int?    @default(-1)
+  height  Int?    @default(-1)
+  frame   Int?    @default(-1)
+
+  @@ignore
+}
+
+model player {
+  id                     Int              @id @unique(map: "diemdanh") @default(autoincrement())
+  account_id             Int?             @unique(map: "account_id")
+  name                   String           @db.VarChar(30)
+  power                  BigInt           @default(0)
+  head                   Int              @default(102)
+  gender                 Int
+  have_tennis_space_ship Boolean?         @default(false)
+  clan_id_sv1            Int              @default(-1)
+  clan_id_sv2            Int              @default(-1)
+  data_inventory         String           @db.Text
+  data_location          String           @db.Text
+  data_point             String           @db.Text
+  data_magic_tree        String           @db.Text
+  items_body             String           @db.Text
+  items_bag              String           @db.Text
+  items_box              String           @db.Text
+  items_box_lucky_round  String           @db.Text
+  friends                String           @db.Text
+  enemies                String           @db.Text
+  data_intrinsic         String           @db.Text
+  data_item_time         String           @db.Text
+  data_task              String           @db.Text
+  data_mabu_egg          String           @db.Text
+  data_charm             String           @db.Text
+  skills                 String           @db.Text
+  skills_shortcut        String           @db.Text
+  pet_info               String           @db.Text
+  pet_power              BigInt           @default(0)
+  pet_point              String           @db.Text
+  pet_body               String           @db.Text
+  pet_skill              String           @db.Text
+  create_time            DateTime         @default(now()) @db.Timestamp(0)
+  data_black_ball        String           @db.Text
+  thoi_vang              Int?
+  data_side_task         String           @db.Text
+  new_reg                Int              @default(0)
+  event_point            Int              @default(0)
+  sao1                   Int              @default(0) @map("1sao")
+  sao2                   Int              @default(0) @map("2sao")
+  sao3                   Int              @default(0) @map("3sao")
+  top                    Int              @default(0)
+  collection_book        String?          @db.Text
+  challenge              String?          @default("[2000000,0,0,1]") @db.VarChar(50)
+  firstTimeLogin         DateTime         @default(now()) @db.Timestamp(0)
+  sk_tet                 String           @default("[0,0,0,0,0]") @db.VarChar(50)
+  buy_limit              String           @default("[0,0,0,0,0,0,0,0,0,0,0,0,0]") @db.VarChar(50)
+  moc_nap                Int?             @default(0)
+  achivements            String?          @db.Text
+  reward_limit           String?          @default("[0,0,0,0,0,0,0,0,0,0]") @db.VarChar(50)
+  topSB                  Int              @default(0)
+  diemdanh               String?          @db.Text
+  moc_nap2               Int              @default(0)
+  data_item_noel         String           @default("[0,0,0,0,0]") @db.Text
+  lastTimeDiemDanhNoel   String           @default("0") @db.Text
+  dhtime                 String           @default("[0,0,-1,0,0,0]") @db.VarChar(100)
+  dhtime2                String           @default("[0,0,-1,0,0,0]") @db.VarChar(100)
+  dhtime3                String           @default("[0,0,-1,0,0,0]") @db.VarChar(100)
+  dhtime4                String           @default("[0,0,-1,0,0,0]") @db.VarChar(100)
+  dhtime5                String           @default("[0,0,-1,0,0,0]") @db.VarChar(100)
+  MaBaoVe                String           @default("[0,0]") @db.VarChar(100)
+  lastimelogin           DateTime         @db.DateTime(0)
+  tongnap                Int              @default(0)
+  killWhis               String           @default("[0,0,0]") @db.VarChar(100)
+  levelKillWhis          String           @default("0") @db.VarChar(255)
+  timeKillWhis           String           @default("0") @db.VarChar(255)
+  checkNhanQua           String           @default("[1,0]") @db.VarChar(255)
+  thanhTichBang          String           @default("[0,0,0,0]") @db.VarChar(255)
+  mocnap_claimed         mocnap_claimed[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model player_task_dety {
+  player_id          BigInt    @id
+  current_task_id    Int?      @default(0)
+  current_kill_count Int?      @default(0)
+  daily_count        Int?      @default(0)
+  last_reset_date    DateTime? @db.Date
+
+  @@index([player_id], map: "idx_player_id")
+}
+
+model post {
+  id      Int      @id @default(autoincrement())
+  avt_id  Int      @default(0)
+  post_by String   @db.Text
+  title   String   @db.Text
+  content String   @db.Text
+  time    DateTime @default(now()) @db.Date
+}
+
+model posts {
+  id         Int        @id @default(autoincrement())
+  tieude     String     @db.VarChar(75)
+  noidung    String     @db.Text
+  username   String     @db.VarChar(50)
+  created_at DateTime   @default(now()) @db.Timestamp(0)
+  theloai    Int        @default(0)
+  ghimbai    Int        @default(0)
+  image      String?    @db.VarChar(255)
+  trangthai  Int        @default(0)
+  tinhtrang  Int        @default(0)
+  comments   comments[]
+}
+
+model power_limit {
+  id       Int    @id @default(autoincrement())
+  power    BigInt
+  hp       Int
+  mp       Int
+  damage   Int
+  defense  Int
+  critical Int
+}
+
+model shop {
+  id           Int          @default(autoincrement())
+  npc_id       Int
+  shop_order   Int
+  npc_template npc_template @relation(fields: [npc_id], references: [id], onUpdate: Restrict, map: "shop_ibfk_1")
+
+  @@id([id, shop_order])
+  @@index([npc_id], map: "npc_id")
+}
+
+model side_task_template {
+  id            Int    @id
+  NAME          String @db.VarChar(255)
+  max_count_lv1 String @db.VarChar(255)
+  max_count_lv2 String @db.VarChar(255)
+  max_count_lv3 String @db.VarChar(255)
+  max_count_lv4 String @db.VarChar(255)
+  max_count_lv5 String @db.VarChar(255)
+}
+
+model skill_template {
+  nclass_id     Int
+  id            Int
+  name          String @db.VarChar(50)
+  max_point     Int    @default(7) @db.SmallInt
+  mana_use_type Int    @db.SmallInt
+  type          Int    @db.SmallInt
+  icon_id       Int
+  dam_info      String @db.VarChar(255)
+  slot          Int    @default(7)
+  skills        String @db.Text
+  desc          String @db.Text
+
+  @@id([nclass_id, id])
+}
+
+model small_version {
+  id Int @id
+  x1 Int
+  x2 Int
+  x3 Int
+  x4 Int
+}
+
+model tab_shop {
+  id      Int    @id @default(autoincrement())
+  shop_id Int
+  NAME    String @db.VarChar(50)
+
+  @@index([shop_id], map: "shop_id")
+}
+
+model task_main_template {
+  id     Int    @id
+  NAME   String @db.VarChar(255)
+  detail String @db.VarChar(255)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model task_sub_template {
+  task_main_id Int
+  NAME         String @db.VarChar(255)
+  max_count    Int    @default(-1)
+  notify       String @default("") @db.VarChar(255)
+  npc_id       Int    @default(-1)
+  map          Int
+
+  @@index([task_main_id], map: "task_main_id")
+  @@ignore
+}
+
+model type_map {
+  id   Int    @id
+  NAME String @db.VarChar(55)
+}
