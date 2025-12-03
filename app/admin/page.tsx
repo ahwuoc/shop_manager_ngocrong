@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, Row, Col } from 'antd';
-import { GiftOutlined, ShoppingOutlined, TrophyOutlined } from '@ant-design/icons';
+import { GiftOutlined, ShoppingOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
 const menuItems = [
@@ -25,6 +25,13 @@ const menuItems = [
     icon: <TrophyOutlined style={{ fontSize: 32, color: '#faad14' }} />,
     href: '/admin/milestones',
     color: '#fffbe6',
+  },
+  {
+    title: 'Accounts',
+    description: 'Manage user accounts, balances, and bans',
+    icon: <UserOutlined style={{ fontSize: 32, color: '#722ed1' }} />,
+    href: '/admin/accounts',
+    color: '#f9f0ff',
   },
 ];
 

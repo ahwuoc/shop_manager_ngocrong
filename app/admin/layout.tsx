@@ -7,6 +7,7 @@ import {
   ShoppingOutlined,
   TrophyOutlined,
   DashboardOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -43,6 +44,11 @@ export default function AdminLayout({
       icon: <TrophyOutlined />,
       label: <Link href="/admin/milestones">Milestones</Link>,
     },
+    {
+      key: '/admin/accounts',
+      icon: <UserOutlined />,
+      label: <Link href="/admin/accounts">Accounts</Link>,
+    },
   ];
 
   const getSelectedKey = () => {
@@ -50,6 +56,7 @@ export default function AdminLayout({
     if (pathname.startsWith('/admin/gift-codes')) return '/admin/gift-codes';
     if (pathname.startsWith('/admin/shop')) return '/admin/shop';
     if (pathname.startsWith('/admin/milestones')) return '/admin/milestones';
+    if (pathname.startsWith('/admin/accounts')) return '/admin/accounts';
     return '/admin';
   };
 
